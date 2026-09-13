@@ -358,7 +358,8 @@ class App(ttk.Frame):
 
 
 def main():
-    root = tk.Tk(); root.title('Divinity II Model Viewer 0.1.10 — visual-only'); root.geometry('1450x900')
+    from . import __version__
+    root = tk.Tk(); root.title(f'Divinity II Model Viewer {__version__} — visual-only'); root.geometry('1450x900')
     root.minsize(1050,650)
     App(root)
     root.mainloop()

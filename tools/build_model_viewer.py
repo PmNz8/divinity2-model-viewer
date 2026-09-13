@@ -41,7 +41,8 @@ def run(output):
     files += [p.relative_to(root).as_posix() for p in sorted((root/'tests').glob('test_model_viewer*.py')) if 'physics' not in p.name]
     files += ['tests/'+name for name in ('test_item_editing.py','test_item_geometry.py','test_item_parameters.py','test_embedded_texture.py','test_texture_roundtrip.py')]
     files += ['model_viewer/docs/'+name for name in DOCS]
-    files += ['tools/build_model_viewer.py','model_viewer/LICENSE']
+    files += ['tools/build_model_viewer.py','tools/pyinstaller_hooks/hook-OpenGL.py',
+              'tools/windows_version.txt','model_viewer/LICENSE']
     files += [p.relative_to(root).as_posix() for p in (root/'model_viewer/LICENSES').rglob('*') if p.is_file()]
     identities = {name:digest(root/name) for name in files}
     output.mkdir(parents=True)
@@ -75,16 +76,20 @@ def run(output):
     command = [sys.executable,'-m','PyInstaller','--onedir','--windowed','--noupx','--name','Divinity2ModelViewer',
                '--distpath',str(output/'binary'),'--workpath',str(output/'build'),
                '--specpath',str(output),'--collect-submodules','OpenGL.platform',
-               '--hidden-import','OpenGL.arrays.numpymodule',str(source/'launcher.py')]
+               '--hidden-import','OpenGL.arrays.numpymodule',
+               '--additional-hooks-dir',str(source/'tools/pyinstaller_hooks'),
+               '--version-file',str(source/'tools/windows_version.txt'),str(source/'launcher.py')]
     environment = os.environ.copy()
     environment['PYTHONDONTWRITEBYTECODE'] = '1'
     for key in ('PYTHONPATH','PYTHONHOME','TCL_LIBRARY','TK_LIBRARY','TCLLIBPATH'):
         environment.pop(key,None)
     environment['PATH']=os.pathsep.join(map(str,(Path(sys.prefix)/'Scripts',Path(sys.base_prefix),Path(sys.base_prefix)/'DLLs',Path(os.environ['SystemRoot'])/'System32',Path(os.environ['SystemRoot']))))
-    for name in ('tests','test','unittest','doctest','pytest','numpy.testing','numpy._core.tests'):
+    for name in ('tests','test','unittest','doctest','pytest','numpy.testing','numpy._core.tests','OpenGL.GLUT'):
         command[command.index(str(source/'launcher.py')):command.index(str(source/'launcher.py'))]=['--exclude-module',name]
     subprocess.run(command,cwd=source,env=environment,check=True)
     binary = output/'binary/Divinity2ModelViewer'
+    if any('glut' in p.name.casefold() for p in binary.rglob('*.dll')):
+        raise RuntimeError('Unused GLUT DLL leaked into the distribution')
     for name in ('README.md','THIRD_PARTY_NOTICES.md','LICENSE'):
         shutil.copy2(source/name,binary/name)
     shutil.copytree(source/'LICENSES',binary/'LICENSES')
@@ -92,7 +97,8 @@ def run(output):
         shutil.copy2(root/'model_viewer/docs'/name,binary/name)
     if identities != {name:digest(root/name) for name in files}:
         raise RuntimeError('source changed during build')
-    manifest = dict(version='0.1.10',experimental=True,published=False,dependencies=REQUIRED,
+    version = subprocess.check_output([sys.executable,'-c','from model_viewer import __version__; print(__version__)'],cwd=source,text=True).strip()
+    manifest = dict(version=version,experimental=True,published=False,dependencies=REQUIRED,
                     repository_revision=subprocess.check_output(['git','rev-parse','HEAD'],cwd=root,text=True).strip(),
                     source_hashes=identities,
                     source_files={p.relative_to(source).as_posix():digest(p) for p in sorted(source.rglob('*')) if p.is_file() and '__pycache__' not in p.parts},
