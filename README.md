@@ -4,10 +4,15 @@ Explore Divinity II models and prepare them for editing in Blender. Preview
 supported NIF, CAT and ITEM assets, inspect textures and animations, and export
 visual `.d2model` packages for the modding workflow.
 
-**[Download 0.2.0 for Windows x64](https://github.com/PmNz8/divinity2-model-viewer/releases/tag/v0.2.0)**
+**[Download 0.2.1 for Windows x64](https://github.com/PmNz8/divinity2-model-viewer/releases/tag/v0.2.1)**
  · [Compatibility matrix](COMPATIBILITY_MATRIX.md) · [Limitations](LIMITATIONS.md) · [Changelog](CHANGELOG.md) · [Build from source](BUILD.md)
 
 ## What you can do
+
+![Model Viewer displaying a dragon CAT and skeleton overlay](docs/images/model-viewer.jpg)
+
+*Dragon CAT preview with skeleton overlay. Screenshot from version 0.2.0;
+diagnostics and normalization labels are in English in 0.2.1.*
 
 - Browse resources in the game's `Packed` folder and filter by name or path.
 - Preview supported standalone NIF models and models embedded in CAT/ITEM containers.
@@ -22,7 +27,7 @@ written to new files; Blender editing and patch building are separate steps.
 
 ## Quick start
 
-1. Download `Divinity2ModelViewer-0.2.0-windows-x64.zip` from the release page.
+1. Download `Divinity2ModelViewer-0.2.1-windows-x64.zip` from the release page.
 2. Extract the **entire folder** and run `Divinity2ModelViewer.exe`.
 3. Choose **Open Packed folder** and select the `Data/Win32/Packed` folder in your game installation.
 4. Find a supported asset, select it and choose **Use as model**. Review its components, textures and available animations.

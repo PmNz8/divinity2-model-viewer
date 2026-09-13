@@ -28,9 +28,9 @@ class App(ttk.Frame):
         ttk.Button(toolbar, text='Open Packed folder', command=lambda:self.guard(self.choose_corpus)).pack(side='left')
         ttk.Button(toolbar, text='Open package', command=lambda:self.guard(self.choose_package)).pack(side='left')
         ttk.Button(toolbar, text='Export source package', command=lambda:self.guard(self.export_dialog)).pack(side='left', padx=6)
-        ttk.Button(toolbar, text='Diagnostyka modelu', command=lambda:self.guard(self.normalization_dialog)).pack(side='left')
+        ttk.Button(toolbar, text='Model diagnostics', command=lambda:self.guard(self.normalization_dialog)).pack(side='left')
         self.normalize_export=tk.BooleanVar(value=True)
-        ttk.Checkbutton(toolbar,text='Normalizuj do edycji',variable=self.normalize_export).pack(side='left')
+        ttk.Checkbutton(toolbar,text='Normalize for editing',variable=self.normalize_export).pack(side='left')
         self.source_label = ttk.Label(toolbar, text='No source selected'); self.source_label.pack(side='left')
         panes = ttk.Panedwindow(self, orient='horizontal'); panes.pack(fill='both', expand=True)
         browser = ttk.Frame(panes, width=330); panes.add(browser, weight=1)
@@ -328,14 +328,14 @@ class App(ttk.Frame):
 
     def normalization_dialog(self):
         from .normalization import diagnostics
-        window=tk.Toplevel(self); window.title('Diagnostyka modelu')
+        window=tk.Toplevel(self); window.title('Model diagnostics')
         table=ttk.Treeview(window,columns=('found','action'),show='headings',height=5)
-        table.heading('found',text='Wykryto'); table.heading('action',text='Przy eksporcie')
+        table.heading('found',text='Detected'); table.heading('action',text='On export')
         table.column('found',width=255); table.column('action',width=300)
         for row in diagnostics(self.preview): table.insert('','end',values=row)
         table.pack(fill='both',expand=True,padx=10,pady=10)
-        ttk.Label(window,text='Normalizacja dotyczy eksportowanej kopii. Oryginał pozostaje bez zmian.').pack(padx=10,pady=6)
-        ttk.Checkbutton(window,text='Normalizuj do edycji',variable=self.normalize_export).pack(pady=6)
+        ttk.Label(window,text='Normalization applies to the exported copy. The original remains unchanged.').pack(padx=10,pady=6)
+        ttk.Checkbutton(window,text='Normalize for editing',variable=self.normalize_export).pack(pady=6)
         return window
 
     def export_dialog(self):

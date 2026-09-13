@@ -1,4 +1,4 @@
-# Divinity II Model Viewer 0.2.0 — visual-only
+# Divinity II Model Viewer 0.2.1 — visual-only
 
 Preview supported NIF models and embedded CAT/ITEM models, textures, skeletons
 and animations. Export source-preserving visual .d2model v1/v2 packages for

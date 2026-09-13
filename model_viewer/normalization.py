@@ -33,17 +33,17 @@ def normalize(raw):
 
 
 def diagnostics(preview):
-    if not preview or not preview.model: return [('Brak modelu','Otwórz model')]
+    if not preview or not preview.model: return [('No model loaded','Open a model')]
     _,rules=normalize(preview.primary.payload)
     rows=[]
     if 'player-dragon-root-names/1' in rules:
-        rows.append(('Niezgodne nazwy węzłów animacji','Uzgodnienie nazw z animacjami'))
+        rows.append(('Animation target name mismatch','Align node names with animation targets'))
     has_div2=any(c['geometry']['div2_floats'] for c in preview.model.components.values())
     if has_div2:
-        rows.append(('Tabela DIV2','Usunięcie tabeli' if rules else 'Brak obsługiwanej reguły normalizacji'))
+        rows.append(('DIV2 table','Remove table' if rules else 'No supported normalization rule'))
     if preview.container and preview.container.get('animation_preview_error') and not rules:
-        rows.append(('Niezgodność animacji','Brak obsługiwanej reguły normalizacji'))
-    return rows or [('Model nie wymaga normalizacji','Bez zmian')]
+        rows.append(('Animation mismatch','No supported normalization rule'))
+    return rows or [('No normalization required','No changes')]
 
 
 def normalized_preview(preview):

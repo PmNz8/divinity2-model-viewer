@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.1
+
+- Translate Model diagnostics, Normalize for editing, and the normalization dialog into English.
+- Add a Model Viewer screenshot to the repository README.
+- No changes to model parsing, normalization rules or exported asset data.
+
 ## 0.2.0
 
 - Version milestone for the visual-only CAT/ITEM, animation and d2model workflow.

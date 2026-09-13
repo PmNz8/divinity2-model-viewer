@@ -16,6 +16,14 @@ def run(package, output):
     try:
         root.update()
         app.open_package(package); root.update()
+        window = app.normalization_dialog(); root.update()
+        if window.title() != 'Model diagnostics':
+            raise RuntimeError('Unexpected diagnostics dialog title')
+        labels = [str(child.cget('text')) for child in window.winfo_children()
+                  if 'text' in child.keys()]
+        if 'Normalize for editing' not in labels:
+            raise RuntimeError('Missing English normalization control')
+        window.destroy(); root.update()
         before = app.frame_count
         if app.preview.clips:
             app.play_button.invoke()
@@ -38,7 +46,8 @@ def run(package, output):
                       components=len(app.preview.model.components), clips=len(app.preview.clips),
                       frames=app.frame_count-before, context=app.viewport.context_info,
                       dependency_status=app.preview.assembly()['dependency_status'],
-                      callback_errors=errors,visual_export_roundtrip=True)
+                      callback_errors=errors,visual_export_roundtrip=True,
+                      english_diagnostics_dialog=True)
     finally:
         root.destroy()
     result['viewport_disposed'] = app.viewport.disposed
