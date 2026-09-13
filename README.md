@@ -5,7 +5,7 @@ supported NIF, CAT and ITEM assets, inspect textures and animations, and export
 visual `.d2model` packages for the modding workflow.
 
 **[Download 0.2.0 for Windows x64](https://github.com/PmNz8/divinity2-model-viewer/releases/tag/v0.2.0)**
- · [Limitations](LIMITATIONS.md) · [Changelog](CHANGELOG.md) · [Build from source](BUILD.md)
+ · [Compatibility matrix](COMPATIBILITY_MATRIX.md) · [Limitations](LIMITATIONS.md) · [Changelog](CHANGELOG.md) · [Build from source](BUILD.md)
 
 ## What you can do
 
