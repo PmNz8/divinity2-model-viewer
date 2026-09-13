@@ -1,0 +1,8 @@
+__pycache__/
+*.pyc
+.venv/
+dist/
+build/
+*.d2model
+*.nif
+*.dv2
